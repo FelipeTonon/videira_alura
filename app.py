@@ -51,25 +51,24 @@ def previsao(interpreter, image):
     # Executa a inferência
     interpreter.invoke()
 
-    # Obtém a saída do modelo
+    # Obtém a saída do modelo (probabilidade da classe "Mature")
     output_data = interpreter.get_tensor(output_details[0]['index'])
-
-    # Verifica o formato e os dados do output
-    st.write("Output data shape:", output_data.shape)
-    st.write("Output data:", output_data)
-
-    # Assumindo que output_data[0][0] é a probabilidade de 'Mature'
+    
+    # A probabilidade da classe "Mature"
     prob_mature = output_data[0][0]
-    prob_immature = 1 - prob_mature  # Probabilidade complementar
 
-    # Escolhe a classe com a maior probabilidade
-    if prob_mature > prob_immature:
+    # Exibe a probabilidade para análise
+    st.write(f"Probabilidade de Mature: {prob_mature * 100:.2f}%")
+
+    # Decisão baseada na probabilidade
+    if prob_mature >= 0.5:
         classe_predita = "Mature"
     else:
         classe_predita = "Immature"
 
     # Exibe o resultado
-    st.success(f"A classe predita com maior probabilidade é: {classe_predita}")
+    st.success(f"A classe predita é: {classe_predita}")
+
 
 def main():
     st.set_page_config(
