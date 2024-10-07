@@ -58,17 +58,24 @@ def previsao(interpreter, image):
     st.write("Output data shape:", output_data.shape)
     st.write("Output data:", output_data)
 
+    # Classes de saída
     classes = ['Immature', 'Mature']
 
-    if len(output_data[0]) == len(classes):
-        df = pd.DataFrame()
-        df['classes'] = classes
-        df['probabilidades (%)'] = 100 * output_data[0]
-        fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
-                     title='Probabilidade de nível de Catarata:')
-        st.plotly_chart(fig)
-    else:
-        st.error("Erro: O número de saídas do modelo não corresponde ao número de classes.")
+    # Considerando que output_data[0][0] seja a probabilidade da classe "Mature"
+    prob_mature = output_data[0][0]
+    prob_immature = 1 - prob_mature  # Probabilidade complementar
+
+    # Cria o DataFrame com as probabilidades
+    df = pd.DataFrame({
+        'classes': classes,
+        'probabilidades (%)': [prob_immature * 100, prob_mature * 100]
+    })
+
+    # Plota o gráfico
+    fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
+                 title='Probabilidade de nível de Catarata:')
+    st.plotly_chart(fig)
+
 
 def main():
     st.set_page_config(
