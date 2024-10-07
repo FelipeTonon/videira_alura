@@ -9,17 +9,15 @@ import pandas as pd
 
 @st.cache_resource
 def carrega_modelo():
-    # URL do modelo Keras (no formato .h5)
-    # url = 'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5
-    
-    # Baixar o modelo
-    output = r'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
-    #gdown.download(url, output, quiet=False)
-    
-    # Carregar o modelo Keras normal
-    modelo = tf.keras.models.load_model(output)
-    
-    return modelo
+    try:
+        output = r'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
+        modelo = tf.keras.models.load_model(output)
+        st.success("Modelo carregado com sucesso!")
+        return modelo
+    except Exception as e:
+        st.error(f"Erro ao carregar o modelo: {e}")
+        return None
+
 
 def carrega_imagem():
     # Cria um file uploader que permite o usuário carregar imagens
