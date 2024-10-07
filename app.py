@@ -40,9 +40,7 @@ def carrega_imagem():
         return image
 
 
-
-
-def previsao(interpreter,image):
+def previsao(interpreter, image):
     # Obtém detalhes dos tensores de entrada e saída
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
@@ -55,19 +53,27 @@ def previsao(interpreter,image):
 
     # Obtém a saída do modelo
     output_data = interpreter.get_tensor(output_details[0]['index'])
-    classes = ['Immature', 'Mature']
-    df = pd.DataFrame()
-    df['classes'] = classes
-    df['probabilidades (%)'] = 100*output_data[0]
-    fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
-             title='Probabilidade de nível de Catarata:')
-    st.plotly_chart(fig)
 
-#
+    # Verifica o formato e os dados do output
+    st.write("Output data shape:", output_data.shape)
+    st.write("Output data:", output_data)
+
+    classes = ['Immature', 'Mature']
+
+    if len(output_data[0]) == len(classes):
+        df = pd.DataFrame()
+        df['classes'] = classes
+        df['probabilidades (%)'] = 100 * output_data[0]
+        fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
+                     title='Probabilidade de nível de Catarata:')
+        st.plotly_chart(fig)
+    else:
+        st.error("Erro: O número de saídas do modelo não corresponde ao número de classes.")
+
 def main():
     st.set_page_config(
         page_title="Classifica Nível de Catarata! 👁️",
-        page_icon="🍇",
+        page_icon="👁️",
     )
     
     st.write("# Classifica Nível de Catarata! 👁️")
