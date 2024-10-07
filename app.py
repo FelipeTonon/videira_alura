@@ -54,10 +54,6 @@ def previsao(interpreter, image):
     # Obtém a saída do modelo
     output_data = interpreter.get_tensor(output_details[0]['index'])
 
-    # Verifica o formato e os dados do output
-    st.write("Output data shape:", output_data.shape)
-    st.write("Output data:", output_data)
-
     # Classes de saída
     classes = ['Immature', 'Mature']
 
