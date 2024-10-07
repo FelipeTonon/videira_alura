@@ -22,7 +22,7 @@ def carrega_modelo():
 
 def carrega_imagem():
     # Cria um file uploader que permite o usuário carregar imagens
-    uploaded_file = st.file_uploader("Arraste e solte uma imagem aqui ou clique para selecionar uma", type=['png', 'jpg', 'jpeg'])
+    uploaded_file = st.file_uploader("Arraste e solte uma imagem aqui ou clique para selecionar uma:", type=['png', 'jpg', 'jpeg'])
     if uploaded_file is not None:
         # Para ler a imagem como um objeto PIL Image
         image_data = uploaded_file.read()
@@ -60,17 +60,17 @@ def previsao(interpreter,image):
     df['classes'] = classes
     df['probabilidades (%)'] = 100*output_data[0]
     fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
-             title='Probabilidade de Classes de Doenças em Uvas')
+             title='Probabilidade de nível de Catarata:')
     st.plotly_chart(fig)
 
 #
 def main():
     st.set_page_config(
-        page_title="Classifica Folhas de Videira",
+        page_title="Classifica Nível de Catarata! 👁️",
         page_icon="🍇",
     )
     
-    st.write("# Classifica Folhas de Videira! 🍇")
+    st.write("# Classifica Nível de Catarata! 👁️")
     
 
     interpreter = carrega_modelo()
