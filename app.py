@@ -11,7 +11,15 @@ import os
 @st.cache_resource
 def carrega_modelo():
     try:
-        output = r'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
+        # Caminho para o modelo
+        output = r'C:/Users/felipe.tonon/Desktop/Reconhecimento_Imagens/modelo_catarata.h5'
+        
+        # Verificar se o arquivo existe
+        if not os.path.exists(output):
+            st.error(f"O arquivo do modelo não foi encontrado no caminho: {output}")
+            return None
+        
+        # Carregar o modelo Keras normal
         modelo = tf.keras.models.load_model(output)
         st.success("Modelo carregado com sucesso!")
         return modelo
