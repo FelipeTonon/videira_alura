@@ -62,8 +62,8 @@ def previsao(interpreter, image):
     classes = ['Immature', 'Mature']
 
     # Assumindo que output_data[0][0] é a probabilidade de 'Mature'
-    prob_mature = output_data[0][0]
-    prob_immature = 1 - prob_mature  # Probabilidade complementar
+    prob_immature = output_data[0][0]
+    prob_mature = 1 - prob_mature  # Probabilidade complementar
 
     # Cria o DataFrame com as probabilidades
     df = pd.DataFrame({
