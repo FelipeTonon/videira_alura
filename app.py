@@ -10,11 +10,11 @@ import pandas as pd
 @st.cache_resource
 def carrega_modelo():
     # URL do modelo Keras (no formato .h5)
-    url = 'https://drive.google.com/uc?id=1jeX7Fv2c6gT1H_J2BrJbWJWOQirk1ZiC'
+    # url = 'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5
     
     # Baixar o modelo
-    output = 'modelo_catarata.h5'
-    gdown.download(url, output, quiet=False)
+    output = 'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
+    #gdown.download(url, output, quiet=False)
     
     # Carregar o modelo Keras normal
     modelo = tf.keras.models.load_model(output)
