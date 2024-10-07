@@ -54,24 +54,22 @@ def previsao(interpreter, image):
     # Obtém a saída do modelo
     output_data = interpreter.get_tensor(output_details[0]['index'])
 
-    # Classes de saída
-    classes = ['Immature', 'Mature']
+    # Verifica o formato e os dados do output
+    st.write("Output data shape:", output_data.shape)
+    st.write("Output data:", output_data)
 
     # Assumindo que output_data[0][0] é a probabilidade de 'Mature'
-    prob_immature = output_data[0][0]
-    prob_mature = 1 - prob_immature  # Probabilidade complementar
+    prob_mature = output_data[0][0]
+    prob_immature = 1 - prob_mature  # Probabilidade complementar
 
-    # Cria o DataFrame com as probabilidades
-    df = pd.DataFrame({
-        'classes': classes,
-        'probabilidades (%)': [prob_immature * 100, prob_mature * 100]
-    })
+    # Escolhe a classe com a maior probabilidade
+    if prob_mature > prob_immature:
+        classe_predita = "Mature"
+    else:
+        classe_predita = "Immature"
 
-    # Plota o gráfico
-    fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
-                 title='Probabilidade de nível de Catarata:')
-    st.plotly_chart(fig)
-
+    # Exibe o resultado
+    st.success(f"A classe predita com maior probabilidade é: {classe_predita}")
 
 def main():
     st.set_page_config(
