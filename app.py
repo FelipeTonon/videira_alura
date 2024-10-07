@@ -9,12 +9,17 @@ import pandas as pd
 
 @st.cache_resource
 def carrega_modelo():
-    # https://drive.google.com/uc?id=1jeX7Fv2c6gT1H_J2BrJbWJWOQirk1ZiC
+    # URL do modelo Keras (no formato .h5)
     url = 'https://drive.google.com/uc?id=1jeX7Fv2c6gT1H_J2BrJbWJWOQirk1ZiC'
-    gdown.download(url, 'modelo_catarata_h5')
-    interpreter = tf.lite.Interpreter(model_path='modelo_catarata_h5')
-    interpreter.allocate_tensors()
-    return interpreter
+    
+    # Baixar o modelo
+    output = 'modelo_catarata.h5'
+    gdown.download(url, output, quiet=False)
+    
+    # Carregar o modelo Keras normal
+    modelo = tf.keras.models.load_model(output)
+    
+    return modelo
 
 def carrega_imagem():
     # Cria um file uploader que permite o usuário carregar imagens
@@ -28,51 +33,46 @@ def carrega_imagem():
         st.image(image)
         st.success("Imagem carregada com sucesso!")
 
-        #Pré-processamento da imagem
+        # Pré-processamento da imagem
         image = np.array(image, dtype=np.float32)
         image = image / 255.0  # Normalização para o intervalo [0, 1]
         image = np.expand_dims(image, axis=0)
 
         return image
 
-def previsao(interpreter,image):
-    # Obtém detalhes dos tensores de entrada e saída
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
-
-    # Define o tensor de entrada para o modelo
-    interpreter.set_tensor(input_details[0]['index'], image)
-
-    # Executa a inferência
-    interpreter.invoke()
-
-    # Obtém a saída do modelo
-    output_data = interpreter.get_tensor(output_details[0]['index'])
+def previsao(modelo, image):
+    # Faz a previsão
+    output_data = modelo.predict(image)
+    
+    # Definir as classes e criar a visualização
     classes = ['Immature', 'Mature']
     df = pd.DataFrame()
     df['classes'] = classes
-    df['probabilidades (%)'] = 100*output_data[0]
+    df['probabilidades (%)'] = 100 * output_data[0]
+    
+    # Criar gráfico de barras com Plotly
     fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
-             title='Probabilidade de Classes de Catarata')
+                 title='Probabilidade de Classes de Catarata')
+    
     st.plotly_chart(fig)
 
 def main():
-    #Detalhes da página inicial
+    # Detalhes da página inicial
     st.set_page_config(
         page_title="Classificador de Catarata",
         page_icon="👁️",
     )
     st.write("# Classificador de Catarata! 👁️")
 
-    #Carrega modelo
-    interpreter = carrega_modelo()
+    # Carrega o modelo
+    modelo = carrega_modelo()
     
-    #Carrega imagem
+    # Carrega a imagem
     image = carrega_imagem()
 
-    #Classifica
+    # Classifica a imagem se ela for carregada
     if image is not None:
-        previsao(interpreter,image)
+        previsao(modelo, image)
 
 if __name__ == "__main__":
     main()
