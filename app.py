@@ -13,7 +13,7 @@ def carrega_modelo():
     # url = 'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5
     
     # Baixar o modelo
-    output = 'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
+    output = r'C:\Users\felipe.tonon\Desktop\Reconhecimento_Imagens\modelo_catarata.h5'
     #gdown.download(url, output, quiet=False)
     
     # Carregar o modelo Keras normal
