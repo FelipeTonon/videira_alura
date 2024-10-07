@@ -33,7 +33,6 @@ def carrega_imagem():
         st.success("Imagem carregada com sucesso!")
 
         #Pré-processamento da imagem
-        image = image.load_img(image, target_size=(416, 416))
         image = np.array(image, dtype=np.float32)
         image = image / 255.0  # Normalização para o intervalo [0, 1]
         image = np.expand_dims(image, axis=0)
@@ -89,6 +88,6 @@ def main():
         previsao(interpreter,image)
     
 
-    
+
 if __name__ == "__main__":
     main()
