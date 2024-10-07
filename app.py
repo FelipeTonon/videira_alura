@@ -55,10 +55,10 @@ def previsao(interpreter, image):
     output_data = interpreter.get_tensor(output_details[0]['index'])
     
     # A probabilidade da classe "Mature"
-    prob_immature = output_data[0][0]
+    prob_immature = output_data[0][1]
 
     # Exibe a probabilidade para análise
-    st.write(f"Probabilidade de Mature: {prob_immature * 100:.2f}%")
+    st.write(f"Probabilidade de Immature: {prob_immature * 100:.2f}%")
 
     # Decisão baseada na probabilidade
     if prob_immature >= 0.5:
