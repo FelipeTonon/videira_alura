@@ -61,9 +61,9 @@ def previsao(interpreter, image):
     # Classes de saída
     classes = ['Immature', 'Mature']
 
-    # Assumindo que o modelo retorna duas probabilidades, uma para cada classe
-    prob_immature = output_data[0][0]
-    prob_mature = output_data[0][1]
+    # Assumindo que output_data[0][0] é a probabilidade de 'Mature'
+    prob_mature = output_data[0][0]
+    prob_immature = 1 - prob_mature  # Probabilidade complementar
 
     # Cria o DataFrame com as probabilidades
     df = pd.DataFrame({
@@ -75,6 +75,7 @@ def previsao(interpreter, image):
     fig = px.bar(df, y='classes', x='probabilidades (%)', orientation='h', text='probabilidades (%)',
                  title='Probabilidade de nível de Catarata:')
     st.plotly_chart(fig)
+
 
 def main():
     st.set_page_config(
